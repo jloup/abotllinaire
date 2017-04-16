@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/jloup/abotllinaire/app/db"
 	"github.com/labstack/echo"
 )
@@ -24,6 +26,7 @@ var Groups = []Group{
 		nil,
 		[]Route{
 			{echo.GET, nil, Get_MakeVerses, "/verses/create"},
+			{echo.GET, nil, Get_FacebookVerses, "/fb/verses"},
 		},
 	},
 	{
@@ -68,7 +71,7 @@ func Post_FBHook(c echo.Context) error {
 			query := &ApiFBMessengerMessage{}
 
 			query.SetSenderIdParam(msg.Sender.Id)
-			query.SetSeedParam(msg.Message.Text)
+			query.SetSeedParam(fmt.Sprintf("%s,", msg.Message.Text))
 			query.Run()
 
 			db.SetFacebookSeq(msg.Sender.Id, msg.Message.Seq, db.SeqResponded)
@@ -79,6 +82,23 @@ func Post_FBHook(c echo.Context) error {
 		}
 	}
 	return WriteResponseRaw(200, []byte("OK"), "text/plain", c)
+}
+
+// /fb/verses?fromId=[verseId]&count=[versesCount]
+func Get_FacebookVerses(c echo.Context) error {
+	query := &ApiGetFacebookVerses{}
+
+	if c.Request().URL.Query().Get("count") != "" {
+		query.SetCountParam(c.Request().URL.Query().Get("count"))
+	} else {
+		query.SetCountParam("10")
+	}
+
+	if c.Request().URL.Query().Get("fromId") != "" {
+		query.SetFromIdParam(c.Request().URL.Query().Get("fromId"))
+	}
+
+	return RunApiQuery(c, query)
 }
 
 // /verses/create?temp=[temperature]&seed=[primetext]&l=[length]

@@ -27,3 +27,11 @@ func InsertPoem(poem *Poem) error {
 
 	return op.Err()
 }
+
+func GetPoems(query interface{}, poems *[]Poem) error {
+	op := NewPoemOp()
+
+	op.Find(query).All(poems)
+
+	return op.Err()
+}
