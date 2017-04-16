@@ -1,0 +1,16 @@
+{
+  "eqeqeq": true,
+  "undef": true,
+  "unused": "vars",
+  "globals": {
+	       "React": true,
+          "ReactDOM": true,
+          "Modernizr": true,
+	       "$": true,
+          "ga": true
+             },
+  "browser": true,
+  "strict": "implied",
+  "browserify": true,
+  "devel": true
+}
