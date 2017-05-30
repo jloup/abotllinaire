@@ -47,11 +47,16 @@ func (s *Sampler) Run(length uint16, temperature float64, seed string) ([]string
 		"sample.lua",
 		s.ModelFilePath,
 		"-gpuid", "-1",
+		"-verbose", "0",
 		"-temperature", strconv.FormatFloat(temperature, 'f', 2, 64),
 		"-length", strconv.Itoa(int(length)),
 	}
 
+	startIndex := 0
+
+	seed = strings.TrimSpace(seed)
 	if seed != "" {
+		startIndex = len(strings.Split(seed, "\n"))
 		args = append(args, "-primetext", seed)
 	}
 
@@ -71,14 +76,9 @@ func (s *Sampler) Run(length uint16, temperature float64, seed string) ([]string
 
 	verses := strings.Split(poem, "\n")
 
-	var startIndex int
-	var verse string
-
-	for startIndex, verse = range verses {
-		if strings.Contains(verse, "-----------") {
-			break
-		}
+	if len(verses) <= startIndex {
+		return []string{}, nil
 	}
 
-	return verses[startIndex+1 : len(verses)-1], nil
+	return verses[startIndex : len(verses)-1], nil
 }
