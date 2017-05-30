@@ -64,7 +64,7 @@ func init() {
 	log.Infof("TORCH PATH: '%s'", C.TorchPath)
 	log.Infof("FB WEBHOOK TOKEN: '%s'", C.FacebookConfig.WebhookToken)
 	log.Infof("FB APP SECRET: '%s'", C.FacebookConfig.AppSecret)
-	log.Infof("BOT CONFIG: temp=[%v, %v] len=%v", C.BotConfig.TemperatureMin, C.BotConfig.TemperatureMax, C.BotConfig.PoemLen)
+	log.Infof("BOT CONFIG: temp=[%v, %v] len=[%v, %v]", C.BotConfig.TemperatureMin, C.BotConfig.TemperatureMax, C.BotConfig.MinPoemLen, C.BotConfig.MaxPoemLen)
 }
 
 type EchoRouter interface {

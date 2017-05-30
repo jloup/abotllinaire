@@ -31,7 +31,8 @@ const _USER_ERROR_MESSAGE = "Hum, ce que vous me dites là n'est pas très inspi
 type BotConfig struct {
 	TemperatureMin float32
 	TemperatureMax float32
-	PoemLen        uint16
+	MinPoemLen     uint16
+	MaxPoemLen     uint16
 }
 
 var _BOT_PARAMETERS BotConfig
