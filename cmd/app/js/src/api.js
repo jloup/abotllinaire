@@ -2,18 +2,17 @@ var Api = {};
 
 Api.API_HOST = 'jlj.am';
 Api.API_PORT = '';
-Api.API_ROOT = 'https://' + Api.API_HOST + '/api/feeder';
+Api.API_ROOT = 'https://' + Api.API_HOST + '/api/abotllinaire';
 
 var ApiEndpoints = {
-  'FEED_BY_ID': {
+  'FB_VERSES': {
             'type': 'GET',
             'parameters': [
-                            {'name': 'id',     'mandatory': true,  'inquery': false},
-                            {'name': 't',      'mandatory': false, 'inquery': true},
-                            {'name': 'exclid', 'mandatory': false, 'inquery': true}
+                            {'name': 'fromId', 'mandatory': false, 'inquery': true},
+                            {'name': 'count',  'mandatory': false, 'inquery': true}
                           ],
             'buildUrl': function(params) {
-              return '/feed/' + params.id;
+              return '/fb/verses';
             }
           },
 };

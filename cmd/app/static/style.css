@@ -1,1 +1,18 @@
 @charset "UTF-8";
+
+body {
+  font-family: 'Cousine', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  background-color: rgb(246, 248, 251);
+  text-align: center;
+}
+
+.poem {
+  margin-bottom: 30px;
+  background-color: white;
+  border: #D2D7D3 solid 1px;
+  border-bottom: #D2D7D3 solid 3px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
