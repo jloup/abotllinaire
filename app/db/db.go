@@ -10,6 +10,7 @@ import (
 
 const (
 	SERVER_URL = "127.0.0.1:27017"
+	VERSE_C    = "verse"
 	POEM_C     = "poems"
 )
 

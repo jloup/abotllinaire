@@ -1,9 +1,21 @@
 package db
 
 import (
+	"crypto/md5"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
+
+type Verse struct {
+	Id   bson.ObjectId `bson:"_id"`
+	S    string
+	Hash string
+}
+
+func (v Verse) MD5Hash() [md5.Size]byte {
+	return md5.Sum([]byte(v.S))
+}
 
 type Poem struct {
 	Id          bson.ObjectId `bson:"_id"`
