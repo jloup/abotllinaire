@@ -7,7 +7,6 @@ import (
 
 	"github.com/jloup/abotllinaire/app/conversation"
 	"github.com/jloup/abotllinaire/app/db"
-	_ "github.com/labstack/gommon/log"
 )
 
 var Intents [][2]string = [][2]string{
