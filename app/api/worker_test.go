@@ -7,7 +7,7 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	s, err := NewWorkerPool(3, "/home/jam/lab/char-rnn", "/home/jam/lab/abotllinaire/lm_lstm_epoch24.91_1.1464.t7")
+	s, err := NewWorkerPool(3, "/home/jam/lab/char-rnn", ".", "/home/jam/lab/abotllinaire/lm_lstm_epoch24.91_1.1464.t7")
 	if err != nil {
 		t.Fatal(err)
 	}

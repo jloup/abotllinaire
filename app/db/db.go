@@ -28,9 +28,12 @@ var (
 )
 
 func ensureIndexes() {
-	/*if err := DB.C(DOCUMENT_C).EnsureIndex(mgo.Index{Key: []string{"scheme", "host", "phash"}, Unique: true}); err != nil {
+	if err := DB.C(VERSE_C).EnsureIndex(mgo.Index{Key: []string{"$text:name"}}); err != nil {
 		log.Fatalln(err)
-	}*/
+	}
+	if err := DB.C(VERSE_C).EnsureIndex(mgo.Index{Key: []string{"hash"}, Unique: true}); err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func InitDB() {
@@ -61,4 +64,8 @@ func InitDB() {
 
 func NewPoemOp() DbOp {
 	return DbOp{c: DB.C(POEM_C)}
+}
+
+func NewVerseOp() DbOp {
+	return DbOp{c: DB.C(VERSE_C)}
 }

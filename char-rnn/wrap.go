@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"os/exec"
 	"strconv"
@@ -78,6 +79,7 @@ func (s *Sampler) Run(length uint16, temperature float64, seed string) ([]string
 	args := []string{
 		"sample.lua",
 		s.ModelFilePath,
+		"-seed", strconv.Itoa(rand.Int()),
 		"-gpuid", "-1",
 		"-verbose", "0",
 		"-temperature", strconv.FormatFloat(temperature, 'f', 2, 64),

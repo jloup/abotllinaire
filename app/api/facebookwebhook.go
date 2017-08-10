@@ -3,10 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"strings"
-
-	"github.com/jloup/abotllinaire/app/db"
 )
 
 type ApiFBMessengerMessage struct {
@@ -72,37 +69,14 @@ func (a *ApiFBMessengerMessage) Run() {
 
 	a.Out = "ok"
 
-	if a.In.Seed == "" {
-		SendFacebookMessage(a.In.SenderId, _USER_ERROR_MESSAGE)
-		a.Error = Error{INTERNAL_ERROR, fmt.Errorf("empty seed")}
-		return
-	}
-
-	temperature := rand.Float32()*(_BOT_PARAMETERS.TemperatureMax-_BOT_PARAMETERS.TemperatureMin) + _BOT_PARAMETERS.TemperatureMin
-
-	poemLen := uint16(len(a.In.Seed))
-	if poemLen < _BOT_PARAMETERS.MinPoemLen {
-		poemLen = _BOT_PARAMETERS.MinPoemLen
-	} else if poemLen > _BOT_PARAMETERS.MaxPoemLen {
-		poemLen = _BOT_PARAMETERS.MaxPoemLen
-	}
-
-	verses, err := workerPool.Request(float64(temperature), poemLen, a.In.Seed)
-	if err != nil {
-		SendFacebookMessage(a.In.SenderId, _USER_ERROR_MESSAGE)
-		a.Error = Error{INTERNAL_ERROR, err}
-		return
-	}
-
-	SendFacebookMessage(a.In.SenderId, strings.Join(verses, "\n"))
-
-	poem := db.Poem{Seed: a.In.Seed, Content: strings.Join(verses, "\n"), FacebookUserId: a.In.SenderId, Temperature: temperature}
-
-	err = db.InsertPoem(&poem)
+	response, err := DispatchUserMessage(a.In.Seed, a.In.SenderId)
 	if err != nil {
 		a.Error = Error{INTERNAL_ERROR, err}
 	}
 
+	if response != "" {
+		SendFacebookMessage(a.In.SenderId, response)
+	}
 }
 
 type ApiFBMessengerChallenge struct {

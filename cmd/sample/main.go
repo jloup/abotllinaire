@@ -21,14 +21,14 @@ func main() {
 	temp, _ := strconv.ParseFloat(os.Args[2], 64)
 	len, _ := strconv.ParseUint(os.Args[1], 10, 64)
 
-	verses, err := sampler.Run(uint16(len), temp, string(b))
+	err = sampler.PipedRun(uint16(len), temp, string(b), os.Stdout)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	for _, verse := range verses {
+	/*for _, verse := range verses {
 		fmt.Println(verse)
-	}
+	}*/
 
 }

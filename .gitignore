@@ -1,0 +1,11 @@
+cmd/app/bower_components
+cmd/app/node_modules
+cmd/app/build
+cmd/**/*.txt
+cmd/api/api
+cmd/app/app
+cmd/img/img
+cmd/img/poem.html
+cmd/sample/sample
+cmd/writer/writer
+
