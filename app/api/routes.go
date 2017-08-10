@@ -1,8 +1,6 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/jloup/abotllinaire/app/db"
 	"github.com/labstack/echo"
 )
@@ -71,7 +69,7 @@ func Post_FBHook(c echo.Context) error {
 			query := &ApiFBMessengerMessage{}
 
 			query.SetSenderIdParam(msg.Sender.Id)
-			query.SetSeedParam(fmt.Sprintf("%s,", msg.Message.Text))
+			query.SetSeedParam(msg.Message.Text)
 			query.Run()
 
 			db.SetFacebookSeq(msg.Sender.Id, msg.Message.Seq, db.SeqResponded)

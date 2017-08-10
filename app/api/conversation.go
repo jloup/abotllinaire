@@ -21,6 +21,7 @@ var Intents [][2]string = [][2]string{
 	{"freestyle", "(?:1G(composer)|1G(raconter)) un poème"},
 	{"freestyle", "2G(Ecrire) un poème"},
 	{"freestyle", "2G(Dire) des mots"},
+	{"freestyle", "Je veux un poème"},
 	{"followup", "^(?:encore|again)"},
 	{"followup", "j'en veux plus"},
 	{"greeting", "^(?P<greetings>Bonjour|Salut|Hi|Coucou|Hello|Hola|Ola)"},
@@ -69,6 +70,7 @@ func DispatchUserMessage(msg string, FBUserId string) (string, error) {
 		response, err = GreetingsResponse(msg, meta["greetings"], FBUserId)
 		action.Type = db.GreetingsAction
 	default:
+		log.WithField("intent", "unrecognized intent").Errorf("%s", msg)
 		response, err = NotRecognizedResponse(msg, FBUserId)
 		action.Type = db.NoneAction
 	}
@@ -83,7 +85,16 @@ func DispatchUserMessage(msg string, FBUserId string) (string, error) {
 }
 
 func SubjectResponse(msg, subject, pronoun, FBUserId string) (string, error) {
-	return SearchVerse(subject, 2, _BOT_PARAMETERS.VerseFilePath, _BOT_PARAMETERS.VerseFilePathLower)
+	verses, err := SearchVerse(subject, 2, _BOT_PARAMETERS.VerseFilePath, _BOT_PARAMETERS.VerseFilePathLower)
+	if err != nil {
+		return verses, err
+	}
+
+	poem := db.Poem{Seed: subject, Content: verses, FacebookUserId: FBUserId, Temperature: 0.0}
+
+	err = db.InsertPoem(&poem)
+
+	return verses, err
 }
 
 func FreestyleResponse(msg, FBUserId string) (string, error) {
